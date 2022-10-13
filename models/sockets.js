@@ -26,6 +26,18 @@ class Sockets {
         ({ agente, escritorio }, callBack) => {
           const suTicket = this.ticketList.asignarTicket(agente, escritorio);
           callBack(suTicket);
+          console.log(suTicket.id);
+
+          const message = new regiTicket({
+            id: suTicket.id,
+            agente: suTicket.agente,
+            escritorio: suTicket.escritorio,
+            numero: suTicket.numero,
+          });
+
+          message.save().then(() => {
+            this.io.emit("ticket-asignado", this.ticketList);
+          });
 
           this.io.emit("ticket-asignado", this.ticketList.ultimos13);
         }
