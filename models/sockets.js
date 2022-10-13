@@ -1,4 +1,5 @@
 const TicketList = require("./ticket-list");
+const regiTicket = require("../models/ticketSchema");
 
 class Sockets {
   constructor(io) {
