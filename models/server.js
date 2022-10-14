@@ -5,6 +5,7 @@ const socketio = require("socket.io");
 const path = require("path");
 const Sockets = require("./sockets");
 const cors = require("cors");
+const ticketSchema = require("./ticketSchema");
 
 class Server {
   constructor() {
@@ -21,6 +22,9 @@ class Server {
         methods: ["GET", "POST"],
       },
     });
+
+    //Inicializar sockets
+    this.sockets = new Sockets(this.io);
   }
 
   middlewares() {
@@ -29,17 +33,19 @@ class Server {
 
     //CORS
     this.app.use(cors());
-  }
 
-  configurarSockets() {
-    new Sockets(this.io);
+    //Get de los utlimos tickets
+    this.app.get("/ultimos", (req, res) => {
+      res.json({
+        ok: true,
+        ultimos: this.sockets.ticketList.ultimos13,
+      });
+    });
   }
 
   execute() {
     //Inicializar Middlewares
     this.middlewares();
-    //Inicializar Sockets
-    this.configurarSockets();
 
     //Iniciarlizar Server
     this.server.listen(this.port, () => {
