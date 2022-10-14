@@ -16,7 +16,7 @@ class TicketList {
 
   // 3 los que se veran en la tarjetas grades  y 10 en el historial
   get ultimos13() {
-    return this.asignados.slice(0, 13);
+    return this.asignados.slice(0, 10);
   }
 
   crearTicket() {
